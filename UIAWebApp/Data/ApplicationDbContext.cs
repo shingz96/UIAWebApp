@@ -22,5 +22,8 @@ namespace UIAWebApp.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<FlightBooking> FlightBookings { get; set; }
     }
 }
