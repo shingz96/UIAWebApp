@@ -10,7 +10,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello 
-                @{var u = await UserManager.GetUserAsync(User)} @u.FullName!</a>
+                @{var u = await UserManager.GetUserAsync(User);} @u.FullName!</a>
 
 </li>
 
