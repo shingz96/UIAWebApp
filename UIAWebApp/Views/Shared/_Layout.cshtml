@@ -32,7 +32,7 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Flight" asp-action="SearchFlight">Search Flight</a></li>
+                    <li><a asp-area="" asp-controller="Flights" asp-action="SearchFlight">Search Flight</a></li>
 
                     @using Microsoft.AspNetCore.Identity
                     @inject SignInManager<ApplicationUser> SignInManager
@@ -40,9 +40,9 @@
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Flight" asp-action="BookedFlights">My Booking</a></li>
+                        <li><a asp-area="" asp-controller="Flights" asp-action="BookedFlights">My Booking</a></li>
                     }
-                    <li><a asp-area="" asp-controller="Flight" asp-action="Index">Flight</a></li>
+                    <li><a asp-area="" asp-controller="Flights" asp-action="Index">Flight</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

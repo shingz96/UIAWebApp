@@ -1,0 +1,149 @@
+﻿@model FlightBooking
+@using UIAWebApp.Data
+@using Microsoft.EntityFrameworkCore;
+@inject ApplicationDbContext _context
+@{
+    ViewData["Title"] = "BookingDetails";
+}
+<h2>BookingDetails</h2>
+<div>
+    <h4>FlightBooking</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FlightBookingId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FlightBookingId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Passenger)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Passenger)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartFlight)
+        </dt>
+        <dd>
+            @{Flight departFlight = await _context.Flights.SingleOrDefaultAsync(m => m.FlightId == Model.DepartFlightId);
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Origin
+                            </th>
+                            <th>
+                                Destination
+                            </th>
+                            <th>
+                                Departure Date Time
+                            </th>
+                            <th>
+                                Arrival Date Time
+                            </th>
+                            <th>
+                                Fare
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @departFlight.Origin
+                            </td>
+                            <td>
+                                @departFlight.Destination
+                            </td>
+                            <td>
+                                @departFlight.DepartureDateTime
+                            </td>
+                            <td>
+                                @departFlight.ArrivalDateTime
+                            </td>
+                            <td>
+                                @departFlight.Fare
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReturnFlight)
+        </dt>
+        <dd>
+            @{
+                if (Model.ReturnFlightId > 0)
+                {
+                    Flight returnFlight = await _context.Flights.SingleOrDefaultAsync(m => m.FlightId == Model.ReturnFlightId);
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Origin
+                                </th>
+                                <th>
+                                    Destination
+                                </th>
+                                <th>
+                                    Departure Date Time
+                                </th>
+                                <th>
+                                    Arrival Date Time
+                                </th>
+                                <th>
+                                    Fare
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @returnFlight.Origin
+                                </td>
+                                <td>
+                                    @returnFlight.Destination
+                                </td>
+                                <td>
+                                    @returnFlight.DepartureDateTime
+                                </td>
+                                <td>
+                                    @returnFlight.ArrivalDateTime
+                                </td>
+                                <td>
+                                    @returnFlight.Fare
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                }
+
+                else
+                {
+                    <p>None</p>
+
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="BookedFlights">Back to List</a>
+</div>
+
+

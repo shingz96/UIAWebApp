@@ -1,0 +1,259 @@
+﻿@model SearchFlightResultViewModel
+@{
+    ViewData["Title"] = "Flight Booking";
+}
+
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    function showReturn() {
+        var vis = "none";
+        var departF = document.getElementsByName("departChkb");
+        var returnF = document.getElementsByName("returnChkb");
+        if ("@Model.RoundTrip" == "True"){
+            if (departF.length > 0 && returnF.length > 0) {
+                vis = "block"
+            }
+        } else if (departF.length > 0) {
+            vis = "block"
+        }
+        document.getElementById("book").style.display = vis;
+    };
+    $(document).ready(function () {
+        showReturn();
+    });
+</script>
+<script type="text/javascript">
+    function selectDepart(id) {
+        var myCheckbox = document.getElementsByName("departChkb");
+        Array.prototype.forEach.call(myCheckbox, function (el) {
+            el.checked = false;
+        });
+        id.checked = true;
+    };
+    function selectReturn(id) {
+        var myCheckbox = document.getElementsByName("returnChkb");
+        Array.prototype.forEach.call(myCheckbox, function (el) {
+            el.checked = false;
+        });
+        id.checked = true;
+    };
+</script>
+<script type="text/javascript">
+    function book() {
+        var departF = document.getElementsByName("departChkb");
+        var returnF = document.getElementsByName("returnChkb");
+        var selectedDepart = -1;
+        var selectedReturn = -1;
+        Array.prototype.forEach.call(departF, function (el) {
+            if (el.checked == true) {
+                selectedDepart = el.id;
+            }
+        });
+
+        var mybookingurl = "/Flights/BookingDetails/";
+
+        if ("@Model.RoundTrip" == "True") {// has round trip
+            Array.prototype.forEach.call(returnF, function (el) {
+                if (el.checked == true) {
+                    selectedReturn = el.id;
+                }
+            });
+            if (selectedDepart != -1 && selectedReturn != -1) {
+                var payload = {
+                    departid: selectedDepart,
+                    returnid: selectedReturn,
+                    passenger: @Model.Passenger,
+                };
+                $.ajax({
+                    url: mybookingurl,
+                    type: "POST",
+                    dataType: "json",
+                    data: payload,
+                    success: function (mydata) {
+                        window.location.href = mybookingurl+mydata.result;
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status == 401) {
+                            alert('Please Login First');
+                        } else if (xhr.status >= 400) {
+                            alert('Unexpected Error! Try again later');
+                        }
+                    }
+                });
+            } else if (selectedDepart == -1) {
+                alert("Please select your desired depart flight first");
+            } else {
+                alert("Please select your desired return flight first");
+            }
+        } else {//no round trip
+            if (selectedDepart != -1) {
+                var payload = {
+                    departid: selectedDepart,
+                    passenger: @Model.Passenger,
+                };
+                $.ajax({
+                    url: mybookingurl,
+                    type: "POST",
+                    dataType: "json",
+                    data: payload,
+                    success: function (mydata) {
+                        window.location.href = mybookingurl+mydata.result;
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status == 401) {
+                            alert('Please Login First');
+                        } else if (xhr.status >= 400){
+                            alert('Unexpected Error! Try again later');
+                        }
+                    }
+                });
+            } else {
+                alert("Please select your desired depart flight first");
+            }
+
+        }
+        return false;
+    };
+</script>
+
+<h2>Flights</h2>
+<br />
+<h4><b>Depart</b> ( @Model.Origin - @Model.Destination )</h4>
+<hr />
+
+@if (Model.Depart.Count() == 0)
+{
+    <center><p>No Flights Available at this date ( @String.Format("{0:D}", Model.DepartDate) )</p></center>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Depart
+                </th>
+                <th>
+                    Arrive
+                </th>
+                <th>
+                    Departure Time
+                </th>
+                <th>
+                    Arrival Time
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Selection
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{  var id = 0;
+                foreach (var item in Model.Depart)
+                {
+                    id = id++;
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Origin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Destination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DepartureDateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivalDateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fare)
+                        </td>
+                        <td>
+                            <center>
+                                <input type="checkbox" name="departChkb" id="@item.FlightId" onclick="selectDepart(this)" />
+                            </center>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+                }
+<br />
+
+@{if (Model.RoundTrip)
+    {
+        <h4><b>Return</b> ( @Model.Destination - @Model.Origin )</h4>
+        <hr />
+        if (Model.Return.Count() == 0)
+        {
+            <center><p>No Flights Available at this date ( @String.Format("{0:D}", Model.ReturnDate) )</p></center>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Depart
+                        </th>
+                        <th>
+                            Arrive
+                        </th>
+                        <th>
+                            Departure Time
+                        </th>
+                        <th>
+                            Arrival Time
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Selection
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Return)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Origin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Destination)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepartureDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArrivalDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fare)
+                            </td>
+                            <td>
+                                <center>
+                                    <input type="checkbox" name="returnChkb" id="@item.FlightId" onclick="selectReturn(this)" />
+                                </center>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+}
+
+<br />
+<div id="book" style="text-align: right; width: 100%; display:none">
+    <h4>Total Passenger: @Model.Passenger</h4>
+    <br />
+    <input type="submit" value="Book Now" class="btn btn-primary" onclick="book()" />
+</div>

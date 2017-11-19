@@ -1,0 +1,48 @@
+﻿@model UIAWebApp.Models.Flight
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Flight</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Origin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Origin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Destination)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Destination)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DepartureDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fare)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fare)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.FlightId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

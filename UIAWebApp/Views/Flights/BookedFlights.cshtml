@@ -1,0 +1,89 @@
+﻿@model IEnumerable<FlightBooking>
+@using UIAWebApp.Data
+@using Microsoft.EntityFrameworkCore;
+@inject ApplicationDbContext _context
+@{
+    ViewData["Title"] = "My Booking";
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Count() == 0)
+{
+    <center><h3>No Booking Made Before. Try <a asp-action="SearchFlight">Search a Flight Now!</a></h3></center>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FlightBookingId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartFlight)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReturnFlight)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Passenger)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPrice)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FlightBookingId)
+                    </td>
+                    <td>
+                        @{
+                            if (item.DepartFlightId > 0)
+                            {
+                                Flight departFlight = await _context.Flights.SingleOrDefaultAsync(m => m.FlightId == item.DepartFlightId);
+                                item.DepartFlight = departFlight;
+                                <p>@item.DepartFlight.Origin->@item.DepartFlight.Destination</p>
+
+                            }
+                            else
+                            {
+                                <p>None</p>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.ReturnFlightId > 0)
+                            {
+                                Flight returnFlight = await _context.Flights.SingleOrDefaultAsync(m => m.FlightId == item.ReturnFlightId);
+                                item.ReturnFlight = returnFlight;
+                                <p>@item.ReturnFlight.Origin->@item.ReturnFlight.Destination</p>
+
+                            }
+                            else
+                            {
+                                <p>None</p>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Passenger)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        <a asp-action="BookingDetails" asp-route-id="@item.FlightBookingId">Details</a>
+                    </td>
+                </tr>
+             }
+        </tbody>
+    </table>
+}
+
+
