@@ -51,6 +51,7 @@
         });
 
         var mybookingurl = "/Flights/BookingDetails/";
+		var bookingurl = "/Flights/BookFlight"
 
         if ("@Model.RoundTrip" == "True") {// has round trip
             Array.prototype.forEach.call(returnF, function (el) {
@@ -65,7 +66,7 @@
                     passenger: @Model.Passenger,
                 };
                 $.ajax({
-                    url: mybookingurl,
+                    url: bookingurl,
                     type: "POST",
                     dataType: "json",
                     data: payload,
@@ -92,7 +93,7 @@
                     passenger: @Model.Passenger,
                 };
                 $.ajax({
-                    url: mybookingurl,
+                    url: bookingurl,
                     type: "POST",
                     dataType: "json",
                     data: payload,
