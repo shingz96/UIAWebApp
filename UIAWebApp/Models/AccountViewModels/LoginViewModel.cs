@@ -8,9 +8,10 @@ namespace UIAWebApp.Models.AccountViewModels
 {
     public class LoginViewModel
     {
+
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username or Email")]
+        public string UserNameOrEmail { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

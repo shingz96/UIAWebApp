@@ -56,6 +56,7 @@ namespace UIAWebApp.Controllers
 
             var model = new IndexViewModel
             {
+                FullName = user.FullName,
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,

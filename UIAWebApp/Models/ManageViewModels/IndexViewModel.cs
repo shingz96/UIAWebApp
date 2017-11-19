@@ -8,6 +8,8 @@ namespace UIAWebApp.Models.ManageViewModels
 {
     public class IndexViewModel
     {
+        public string FullName { get; set; }
+
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
