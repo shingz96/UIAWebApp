@@ -42,7 +42,10 @@
                     {
                         <li><a asp-area="" asp-controller="Flights" asp-action="BookedFlights">My Booking</a></li>
                     }
-                    <li><a asp-area="" asp-controller="Flights" asp-action="Index">Flight</a></li>
+                    @if ((await UserManager.GetUserAsync(User)).UserName == "admin96")
+                    {
+                        <li><a asp-area="" asp-controller="Flights" asp-action="Index">Flight</a></li>
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
